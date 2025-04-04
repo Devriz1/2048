@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const restartButton = document.getElementById("restart-button");
     let scoreElement = document.getElementById("score");
     let bestScoreElement = document.getElementById("best-score");
-    
+
     let grid = Array(4).fill().map(() => Array(4).fill(0));
     let score = 0;
     let bestScore = localStorage.getItem("bestScore") || 0;
@@ -70,12 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function move(direction) {
-        if (gameOver) return; // Stop movement if game over
+        if (gameOver) return;
 
         let moved = false;
         let rotated = false;
 
-        // Rotate the grid based on the direction for easier handling
         if (direction === "ArrowUp") {
             grid = rotateGrid(grid);
             rotated = true;
@@ -106,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
             grid[i] = newRow;
         }
 
-        // Reverse rotation
         if (rotated) {
             grid = rotateGrid(grid);
             if (direction === "ArrowDown") {
@@ -140,41 +138,48 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
             gameOverDiv.style.visibility = "visible";
-            gameOver = true; // Stop further movement
+            gameOver = true;
         }
     }
 
     restartButton.addEventListener("click", initializeGame);
     document.addEventListener("keydown", (e) => move(e.key));
     initializeGame();
-});
 
-    // Touch support for smartphones
-    let startX, startY;
+    // ✅ Mobile Touch Support
+    let startX = null;
+    let startY = null;
 
-    document.addEventListener("touchstart", function (e) {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
+    document.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
     });
 
-    document.addEventListener("touchend", function (e) {
-        if (!startX || !startY) return;
+    document.addEventListener("touchend", (e) => {
+        if (startX === null || startY === null) return;
 
-        let endX = e.changedTouches[0].clientX;
-        let endY = e.changedTouches[0].clientY;
+        const touch = e.changedTouches[0];
+        const endX = touch.clientX;
+        const endY = touch.clientY;
 
-        let deltaX = endX - startX;
-        let deltaY = endY - startY;
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
 
-        if (Math.abs(deltaX) > Math.abs(deltaY)) {
-            if (deltaX > 30) move("ArrowRight");
-            else if (deltaX < -30) move("ArrowLeft");
-        } else {
-            if (deltaY > 30) move("ArrowDown");
-            else if (deltaY < -30) move("ArrowUp");
+        const absX = Math.abs(deltaX);
+        const absY = Math.abs(deltaY);
+
+        if (Math.max(absX, absY) > 20) {
+            if (absX > absY) {
+                if (deltaX > 0) move("ArrowRight");
+                else move("ArrowLeft");
+            } else {
+                if (deltaY > 0) move("ArrowDown");
+                else move("ArrowUp");
+            }
         }
 
-        // reset
         startX = null;
         startY = null;
     });
+});
