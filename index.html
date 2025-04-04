@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 Game</title>
+    <link rel="stylesheet" href="css\style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>2048</h1>
+        <div class="score-container">
+            <div class="score-box">Score: <span id="score">0</span></div>
+            <div class="score-box">Best: <span id="best-score">0</span></div>
+        </div>
+        <div class="game-container" id="game-board">
+            <div class="game-over" id="game-over">Game Over!</div>
+        </div>
+        <button id="restart-button">New Game</button>
+        <p class="instructions">Use arrow keys to move tiles. When two tiles with the same number touch, they merge!</p>
+        <p class="footer">Created with inspiration from 2048 by Gabriele Cirulli.</p>
+    </div>
+    <script src="js\script.js"></script>
+</body>
+</html>
