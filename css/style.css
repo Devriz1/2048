@@ -2,6 +2,9 @@ body {
     font-family: Arial, sans-serif;
     background: #faf8ef;
     text-align: center;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .container {
