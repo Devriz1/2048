@@ -148,3 +148,33 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("keydown", (e) => move(e.key));
     initializeGame();
 });
+
+    // Touch support for smartphones
+    let startX, startY;
+
+    document.addEventListener("touchstart", function (e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    });
+
+    document.addEventListener("touchend", function (e) {
+        if (!startX || !startY) return;
+
+        let endX = e.changedTouches[0].clientX;
+        let endY = e.changedTouches[0].clientY;
+
+        let deltaX = endX - startX;
+        let deltaY = endY - startY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX > 30) move("ArrowRight");
+            else if (deltaX < -30) move("ArrowLeft");
+        } else {
+            if (deltaY > 30) move("ArrowDown");
+            else if (deltaY < -30) move("ArrowUp");
+        }
+
+        // reset
+        startX = null;
+        startY = null;
+    });
